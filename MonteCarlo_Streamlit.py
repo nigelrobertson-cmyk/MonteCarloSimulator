@@ -336,18 +336,18 @@ if submitted:
 results = st.session_state.simulation_results
 inputs = st.session_state.simulation_inputs
 
-input_tab, results_tab, chart_tab = st.tabs(
-    ["Inputs", "Financial Results", "Chart"]
+results_tab, chart_tab = st.tabs(
+    ["Financial Results", "Chart"]
 )
 
-with input_tab:
-    st.info(
-        "Set your assumptions above and select **Run Simulation**. "
-        "Your latest results will appear in the Financial Results and Chart tabs."
-    )
-    if inputs:
-        st.write("**Last simulation settings**")
-        st.json(inputs)
+#with input_tab:
+#    st.info(
+#        "Set your assumptions above and select **Run Simulation**. "
+#        "Your latest results will appear in the Financial Results and Chart tabs."
+#    )
+    #if inputs:
+    #    st.write("**Last simulation settings**")
+    #    st.json(inputs)
 
 with results_tab:
     st.subheader("Simulation Results")
@@ -355,14 +355,15 @@ with results_tab:
         st.info("Run a simulation to populate these results.")
     else:
         currency_items = [
-            ("Median Terminal Value", results["median_terminal"]),
             ("Mean Terminal Value", results["mean_terminal"]),
+            ("Median Terminal Value", results["median_terminal"]),
             ("Smooth Growth Forecast", results["naive_terminal"]),
             ("Difference vs. Smooth Forecast", results["difference"]),
             ("5th Percentile", results["p5"]),
+            ("Worst Simulation", results["worst_terminal"]),
             ("95th Percentile", results["p95"]),
             ("Best Simulation", results["best_terminal"]),
-            ("Worst Simulation", results["worst_terminal"]),
+            
         ]
         metric_cols = st.columns(2)
         for index, (label, value) in enumerate(currency_items):
@@ -378,14 +379,14 @@ with results_tab:
         lines = [
             "PROBUS PORTFOLIO SIMULATOR RESULTS",
             "=" * 42,
-            f"Median Terminal Value: ${results['median_terminal']:,.0f}",
-            f"Mean Terminal Value: ${results['mean_terminal']:,.0f}",
             f"Smooth Growth Forecast: ${results['naive_terminal']:,.0f}",
+            f"Mean Terminal Value: ${results['mean_terminal']:,.0f}",
+            f"Median Terminal Value: ${results['median_terminal']:,.0f}",
             f"Difference vs. Smooth Forecast: ${results['difference']:,.0f}",
             f"5th Percentile: ${results['p5']:,.0f}",
+            f"Worst Simulation: ${results['worst_terminal']:,.0f}",
             f"95th Percentile: ${results['p95']:,.0f}",
             f"Best Simulation: ${results['best_terminal']:,.0f}",
-            f"Worst Simulation: ${results['worst_terminal']:,.0f}",
             f"Median IRR (annualized): {irr_text}",
             f"Probability of Ruin: {results['probability_ruin']:.2%}",
             f"Number of Simulations: {results['num_sims']:,}",
